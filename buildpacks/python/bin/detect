@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+# if package.json does not exist
+if [ ! -f "package.json" ]; then
+  echo "No package.json found"
+  exit 1
+fi
+
+# if the package.json does not contain the string "@bytecodealliance/componentize-js"
+if ! grep -q "@bytecodealliance/componentize-js" "package.json"; then
+  echo "No @bytecodealliance/componentize-js found in package.json"
+  exit 2
+fi
+
+# if there are no files that end with .wit or no wit directory
+files=( "*.wit" )
+if ! (( ${#files[@]} )) && [ ! -d "wit" ] ; then
+  echo "No .wit files or wit directory found"
+  exit 3
+fi
+
+# if there is no Cargo.toml
+if [ ! -f "Cargo.toml" ]; then
+  echo "No Cargo.toml found"
+  exit 4
+fi
+
+echo "Wasm JS"
+exit 0

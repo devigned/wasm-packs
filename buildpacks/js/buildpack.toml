@@ -1,0 +1,11 @@
+
+api = "0.10"
+WithWindowsBuild = false
+WithLinuxBuild = false
+
+[buildpack]
+id = "wasm/node-js"
+version = "0.0.1"
+
+[[targets]]
+os = "linux"

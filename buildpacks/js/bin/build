@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+layers_dir="$1"
+env_dir="$2/env"
+plan_path="$3"
+
+echo "---> Wasm NodeJS Buildpack"
+
+wasm_js_layer="${CNB_LAYERS_DIR}"/wasm-js
+mkdir -p "${wasm_js_layer}"
+
+touch echo "Wasm NodeJS" >> "${wasm_js_layer}"/build.log
+
+exit 0

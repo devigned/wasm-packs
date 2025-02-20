@@ -1,0 +1,15 @@
+[[buildpacks]]
+id = "wasm/node-js"
+version = "0.0.1"
+uri = "../../buildpacks/js"
+
+[[order]]
+[[order.group]]
+id = "wasm/node-js"
+version = "0.0.1"
+
+[build]
+image = "wasm/demo-base-build:wasm"
+[run]
+[[run.images]]
+image = "wasm/demo-base-run:wasm"
