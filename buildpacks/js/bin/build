@@ -11,6 +11,17 @@ echo "---> Wasm NodeJS Buildpack"
 wasm_js_layer="${CNB_LAYERS_DIR}"/wasm-js
 mkdir -p "${wasm_js_layer}"
 
+# recursively copy all files ending in .wasm into the layer directory
+find . -name "*.wasm" -exec cp {} "${wasm_js_layer}" \;
+
 touch echo "Wasm NodeJS" >> "${wasm_js_layer}"/build.log
+
+# Set default start command
+cat > "${CNB_LAYERS_DIR}/launch.toml" << EOL
+[[processes]]
+type = "web"
+command = ["wasmtime", "serve", "hello.component.wasm"]
+default = true
+EOL
 
 exit 0

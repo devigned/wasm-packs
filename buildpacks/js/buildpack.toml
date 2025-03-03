@@ -1,11 +1,16 @@
-
 api = "0.10"
-WithWindowsBuild = false
-WithLinuxBuild = false
 
 [buildpack]
-id = "wasm/node-js"
+id = "wasm/nodejs"
 version = "0.0.1"
+
+[[buildpack.licenses]]
+type = "MIT"
 
 [[targets]]
 os = "linux"
+arch = "amd64"
+
+[[targets]]
+os = "linux"
+arch = "arm64"

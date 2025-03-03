@@ -1,15 +1,44 @@
-[[buildpacks]]
-id = "wasm/node-js"
-version = "0.0.1"
-uri = "../../buildpacks/js"
-
-[[order]]
-[[order.group]]
-id = "wasm/node-js"
-version = "0.0.1"
+description = "A builder for WebAssembly"
 
 [build]
 image = "wasm/demo-base-build:wasm"
 [run]
 [[run.images]]
 image = "wasm/demo-base-run:wasm"
+
+[lifecycle]
+version = "0.20.5"
+
+[[buildpacks]]
+uri = "docker://docker.io/heroku/buildpack-deb-packages@sha256:f2c0162a2fb5f9cb7e6b3c5c59907089483a328824c9323a85cc67d47ab9198c"
+
+[[buildpacks]]
+uri = "../../meta-buildpacks/nodejs"
+
+[[buildpacks]]
+uri = "docker://docker.io/heroku/buildpack-nodejs-engine:3.4.11"
+
+[[buildpacks]]
+uri = "docker://docker.io/heroku/buildpack-nodejs-corepack:3.4.11"
+
+[[buildpacks]]
+uri = "docker://docker.io/heroku/buildpack-nodejs-npm-engine:3.4.11"
+
+[[buildpacks]]
+uri = "docker://docker.io/heroku/buildpack-nodejs-npm-install:3.4.11"
+
+[[buildpacks]]
+uri = "../../buildpacks/js"
+
+[[order]]
+[[order.group]]
+id = "devigned/nodejs"
+version = "0.0.1"
+
+[[targets]]
+os = "linux"
+arch = "amd64"
+
+[[targets]]
+os = "linux"
+arch = "arm64"

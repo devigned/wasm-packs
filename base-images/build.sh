@@ -2,7 +2,7 @@
 set -e
 
 DEFAULT_PREFIX=wasm/demo-base
-DEFAULT_PLATFORM=arm64
+DEFAULT_PLATFORM=linux/arm64
 
 REPO_PREFIX=${DEFAULT_PREFIX}
 PLATFORM=${DEFAULT_PLATFORM}
@@ -10,8 +10,6 @@ PLATFORM=${DEFAULT_PLATFORM}
 usage() {
   echo "Usage: "
   echo "  $0 [-f <prefix>] [-p <platform>] <dir>"
-  echo "    -f    prefix to use for images      (default: ${DEFAULT_PREFIX})"
-  echo "    -p    prefix to use for images      (default: ${DEFAULT_PLATFORM})"
   echo "   <dir>  directory to build"
   exit 1;
 }
@@ -54,43 +52,24 @@ cd $(dirname $0)
 
 IMAGE_DIR=$(realpath "${BASE_DIR}")
 TAG=$(basename "${IMAGE_DIR}")
-BASE_IMAGE=${REPO_PREFIX}:${TAG}
+BASE_IMAGE=heroku/heroku:24-build
 RUN_IMAGE=${REPO_PREFIX}-run:${TAG}
 BUILD_IMAGE=${REPO_PREFIX}-build:${TAG}
 FROM_IMAGE=$(head -n1 "${IMAGE_DIR}"/base/Dockerfile | cut -d' ' -f2)
 
-# Get target distro information
-if cmd /c ver; then
-  DISTRO_NAME=""
-  RAW_VERSION=$(docker run --rm "${FROM_IMAGE}" cmd /c ver)
-  DISTRO_VERSION=$(echo "$RAW_VERSION" | head -n1 | sed 's/Microsoft Windows //' | sed 's/[][]//g' | cut -d' ' -f2)
-  echo "DISTRO_VERSION: ${DISTRO_VERSION}"
-else
-  DISTRO_NAME=$(docker run --rm "${FROM_IMAGE}" cat /etc/os-release | grep '^ID=' | cut -d'=' -f2)
-  echo "DISTRO_NAME: ${DISTRO_NAME}"
-  DISTRO_VERSION=$(docker run --rm "${FROM_IMAGE}" cat /etc/os-release | grep '^VERSION_ID=' | cut -d'=' -f2)
-  echo "DISTRO_VERSION: ${DISTRO_VERSION}"
-fi
-
-if [[ -d "${IMAGE_DIR}/base" ]]; then
-  docker build  \
-  --build-arg "distro_name=${DISTRO_NAME}" \
-  --build-arg "distro_version=${DISTRO_VERSION}" \
-  -t "${BASE_IMAGE}" \
-  "${IMAGE_DIR}/base"
-fi
-
 echo "BUILDING ${BUILD_IMAGE}..."
-docker build \
-  --build-arg "base_image=${BASE_IMAGE}" \
-  -t "${BUILD_IMAGE}" \
-  "${IMAGE_DIR}/build"
+docker buildx build --load \
+	--platform "${PLATFORM}" \
+	--build-arg "BASE_IMAGE=${BASE_IMAGE}" \
+	-t "${BUILD_IMAGE}" \
+	"${IMAGE_DIR}/build"
 
 echo "BUILDING ${RUN_IMAGE}..."
-docker build  \
-  --build-arg "base_image=${BASE_IMAGE}" \
-  -t "${RUN_IMAGE}" \
-  "${IMAGE_DIR}/run"
+docker buildx build --load \
+	--platform "${PLATFORM}" \
+	--build-arg "BASE_IMAGE=${BUILD_IMAGE}" \
+	-t "${RUN_IMAGE}" \
+	"${IMAGE_DIR}/run"
 
 echo
 echo "BASE IMAGES BUILT!"
