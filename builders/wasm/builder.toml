@@ -30,6 +30,12 @@ uri = "docker://docker.io/heroku/buildpack-nodejs-npm-install:3.4.11"
 [[buildpacks]]
 uri = "../../buildpacks/js"
 
+[[buildpacks]]
+uri = "../../buildpacks/wasmtime-engine"
+
+[[buildpacks]]
+uri = "../../buildpacks/wasm-tools"
+
 [[order]]
 [[order.group]]
 id = "devigned/nodejs"

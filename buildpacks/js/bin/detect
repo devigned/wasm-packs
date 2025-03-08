@@ -19,11 +19,5 @@ if ! (( ${#files[@]} )) && [ ! -d "wit" ] ; then
   exit 3
 fi
 
-# if there is no Cargo.toml
-if [ ! -f "Cargo.toml" ]; then
-  echo "No Cargo.toml found"
-  exit 4
-fi
-
 echo "Wasm JS"
 exit 0

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+wasm_tools_layer="${CNB_LAYERS_DIR}"/wasm-tools
+echo "---> Installing Wasm build tools into layer ${wasm_tools_layer}"
+mkdir -p "${wasm_tools_layer}/bin"
+CARGO_INSTALL_ROOT="${wasm_tools_layer}" cargo install --locked wasm-tools
+CARGO_INSTALL_ROOT="${wasm_tools_layer}" cargo install --locked wkg
+cat > "${wasm_tools_layer}.toml" << EOL
+[types]
+launch = false
+cache = true
+build = true
+EOL
+
+export PATH="${PATH}:${wasm_tools_layer}/bin"

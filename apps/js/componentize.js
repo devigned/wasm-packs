@@ -1,14 +1,16 @@
-import { componentize } from '@bytecodealliance/componentize-js';
-import { readFile, writeFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { readFile, writeFile } from "node:fs/promises";
+import { resolve } from "node:path";
 
-const enableAot = process.env.ENABLE_AOT == '1'
+import { componentize } from "@bytecodealliance/componentize-js";
 
-const jsSource = await readFile('hello.js', 'utf8');
+// AoT compilation makes use of weval (https://github.com/bytecodealliance/weval)
+const enableAot = process.env.ENABLE_AOT == "1";
+
+const jsSource = await readFile("server.js", "utf8");
 
 const { component } = await componentize(jsSource, {
-  witPath: resolve('hello.wit'),
-  enableAot
+  witPath: resolve("wit"),
+  enableAot,
 });
 
-await writeFile('hello.component.wasm', component);
+await writeFile("server.component.wasm", component);

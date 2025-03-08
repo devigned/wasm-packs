@@ -15,18 +15,6 @@ RUN curl https://sh.rustup.rs -sSf | bash -s -- -y -target=wasm32-wasip2
 RUN echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
 ENV PATH="$PATH:/home/heroku/.cargo/bin"
 
-RUN cargo install \
-  --profile='fastest-runtime' \
-  --config='profile.fastest-runtime.strip="symbols"' \
-  --config='profile.fastest-runtime.panic="abort"' \
-  wasmtime-cli
-
-RUN cargo install --locked wasm-tools
-
-USER root
-RUN cp $CARGO_HOME/bin/wasmtime /wasmtime
-
-USER heroku
 LABEL io.buildpacks.base.distro.name="ubuntu"
 LABEL io.buildpacks.base.distro.version="24.04"
 LABEL io.buildpacks.base.homepage="https://github.com/devigned/wasm-packs"

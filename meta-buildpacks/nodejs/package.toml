@@ -15,3 +15,9 @@ uri = "libcnb:heroku/nodejs-corepack"
 
 [[dependencies]]
 uri = "../buildpacks/js"
+
+[[dependencies]]
+uri = "../buildpacks/wasmtime-engine"
+
+[[dependencies]]
+uri = "../buildpacks/wasm-tools"

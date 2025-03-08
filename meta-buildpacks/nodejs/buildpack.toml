@@ -11,6 +11,14 @@ type = "MIT"
 [[order]]
 
 [[order.group]]
+id = "wasm/wasm-tools"
+version = "0.0.1"
+
+[[order.group]]
+id = "wasm/wasmtime-engine"
+version = "0.0.1"
+
+[[order.group]]
 id = "heroku/nodejs-engine"
 version = "3.4.11"
 

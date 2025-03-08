@@ -2,26 +2,30 @@
 
 set -euo pipefail
 
-layers_dir="$1"
-env_dir="$2/env"
-plan_path="$3"
+# TODO: Create layer.toml where the target directory is cached in build only. We will want to copy the .wasm artifacts into a layer or the workspace directory.
 
-echo "---> Wasm NodeJS Buildpack"
+wasm_component_layer="${CNB_LAYERS_DIR}"/wasm-js-components
+mkdir -p "${wasm_component_layer}"
+cat > "${wasm_component_layer}.toml" << EOL
+[types]
+launch = true
+cache = false
+build = false
+EOL
 
-wasm_js_layer="${CNB_LAYERS_DIR}"/wasm-js
-mkdir -p "${wasm_js_layer}"
-
-# recursively copy all files ending in .wasm into the layer directory
-find . -name "*.wasm" -exec cp {} "${wasm_js_layer}" \;
-
-touch echo "Wasm NodeJS" >> "${wasm_js_layer}"/build.log
+# recursively copy all files ending in .wasm into the layer directory and ignore the target and node_module directories
+find . -name "*.wasm" -not -path "./target/*" -not -path "./node_modules/*" -exec cp {} "${wasm_component_layer}" \;
 
 # Set default start command
 cat > "${CNB_LAYERS_DIR}/launch.toml" << EOL
 [[processes]]
 type = "web"
-command = ["wasmtime", "serve", "hello.component.wasm"]
+command = ["wasmtime", "serve", "${CNB_LAYERS_DIR}/wasm-js-components/server.component.wasm"]
 default = true
 EOL
+
+# remove the files in the /workspace directory
+rm -rf /workspace/*
+touch /workspace/.built
 
 exit 0

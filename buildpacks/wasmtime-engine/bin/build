@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+wasmtime_engine_layer="${CNB_LAYERS_DIR}"/wasmtime-engine
+echo "---> Installing Wasmtime into layer ${wasmtime_engine_tools_layer}"
+mkdir -p "${wasmtime_engine_layer}/bin"
+CARGO_INSTALL_ROOT="${wasmtime_engine_layer}" cargo install \
+  --profile='fastest-runtime' \
+  --config='profile.fastest-runtime.strip="symbols"' \
+  --config='profile.fastest-runtime.panic="abort"' \
+  wasmtime-cli
+cat > "${wasmtime_engine_layer}.toml" << EOL
+[types]
+launch = true
+cache = true
+build = true
+EOL
+
+export PATH="${PATH}:${wasmtime_engine_layer}/bin"
