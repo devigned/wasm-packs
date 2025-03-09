@@ -1,13 +1,35 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 wasm_tools_layer="${CNB_LAYERS_DIR}"/wasm-tools
-echo "---> Installing Wasm build tools into layer ${wasm_tools_layer}"
-mkdir -p "${wasm_tools_layer}/bin"
-CARGO_INSTALL_ROOT="${wasm_tools_layer}" cargo install --locked wasm-tools
-CARGO_INSTALL_ROOT="${wasm_tools_layer}" cargo install --locked wkg
+
+cargo_wasm_tools_version=$(cargo info -q wasm-tools | grep -m 1 'version:' | awk '{print $2}')
+metadata_wasm_tools_version=$(grep 'wasm_tools_version =' "${wasm_tools_layer}.toml" 2>/dev/null | awk -F ' = ' '{print $2}' | tr -d '"' || echo "")
+if [ "${cargo_wasm_tools_version}" != "${metadata_wasm_tools_version}" ]; then
+    echo "---> Installing Wasm build tools into layer ${wasm_tools_layer}"
+    mkdir -p "${wasm_tools_layer}/bin"
+    CARGO_INSTALL_ROOT="${wasm_tools_layer}" cargo install --locked wasm-tools
+else
+    echo "---> Reusing existing wasm-tools crate: ${metadata_wasm_tools_version}"
+fi
+
+cargo_wkg_version=$(cargo info -q wkg | grep -m 1 'version:' | awk '{print $2}')
+metadata_wkg_version=$(grep 'wkg_version =' "${wasm_tools_layer}.toml" 2>/dev/null | awk -F ' = ' '{print $2}' | tr -d '"' || echo "")
+
+if [ "${cargo_wkg_version}" != "${metadata_wkg_version}" ]; then
+    echo "---> Installing wkg crate into layer ${wasm_tools_layer}"
+    CARGO_INSTALL_ROOT="${wasm_tools_layer}" cargo install --locked wkg
+else
+    echo "---> Reusing existing wkg crate: ${metadata_wkg_version}"
+fi
 cat > "${wasm_tools_layer}.toml" << EOL
 [types]
 launch = false
 cache = true
 build = true
+
+[metadata]
+wasm_tools_version = "${cargo_wasm_tools_version}"
+wkg_version = "${cargo_wkg_version}"
 EOL

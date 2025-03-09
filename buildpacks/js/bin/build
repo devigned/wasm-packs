@@ -4,7 +4,7 @@ set -euo pipefail
 
 # TODO: Create layer.toml where the target directory is cached in build only. We will want to copy the .wasm artifacts into a layer or the workspace directory.
 
-wasm_component_layer="${CNB_LAYERS_DIR}"/wasm-js-components
+wasm_component_layer="${CNB_LAYERS_DIR}/wasm-js-components"
 mkdir -p "${wasm_component_layer}"
 cat > "${wasm_component_layer}.toml" << EOL
 [types]
@@ -12,6 +12,8 @@ launch = true
 cache = false
 build = false
 EOL
+
+echo "---> Copying .wasm files to layer"
 
 # recursively copy all files ending in .wasm into the layer directory and ignore the target and node_module directories
 find . -name "*.wasm" -not -path "./target/*" -not -path "./node_modules/*" -exec cp {} "${wasm_component_layer}" \;
