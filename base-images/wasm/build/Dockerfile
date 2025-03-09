@@ -4,14 +4,14 @@ FROM ${BASE_IMAGE} AS base
 # Install packages that we want to make available at build time
 USER root
 RUN apt update && \
-  apt install -y git wget jq && \
+  apt install -y git wget jq musl-tools && \
   rm -rf /var/lib/apt/lists/*
 
 USER heroku
 # Get Rust
 ENV CARGO_HOME=/home/heroku/.cargo
 ENV RUSTUP_HOME=/home/heroku/.rustup
-RUN curl https://sh.rustup.rs -sSf | bash -s -- -y -target=wasm32-wasip2
+RUN curl https://sh.rustup.rs -sSf | bash -s -- -y --target=wasm32-wasip2,$(uname -m)-unknown-linux-musl
 RUN echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
 ENV PATH="$PATH:/home/heroku/.cargo/bin"
 

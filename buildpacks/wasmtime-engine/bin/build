@@ -13,6 +13,7 @@ CARGO_INSTALL_ROOT="${wasmtime_engine_layer}" cargo install \
   --profile='fastest-runtime' \
   --config='profile.fastest-runtime.strip="symbols"' \
   --config='profile.fastest-runtime.panic="abort"' \
+  --target="$(uname -m)-unknown-linux-musl" \
   wasmtime-cli
 else
   echo "---> Reusing existing wasmtime crate: ${metadata_wasmtime_version}"
