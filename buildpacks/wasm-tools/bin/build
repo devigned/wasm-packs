@@ -11,5 +11,3 @@ launch = false
 cache = true
 build = true
 EOL
-
-export PATH="${PATH}:${wasm_tools_layer}/bin"

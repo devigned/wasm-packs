@@ -14,5 +14,3 @@ launch = true
 cache = true
 build = true
 EOL
-
-export PATH="${PATH}:${wasmtime_engine_layer}/bin"
