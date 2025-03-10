@@ -22,7 +22,7 @@ find . -name "*.wasm" -not -path "./target/*" -not -path "./node_modules/*" -exe
 cat > "${CNB_LAYERS_DIR}/launch.toml" << EOL
 [[processes]]
 type = "web"
-command = ["wasmtime", "serve", "${CNB_LAYERS_DIR}/wasm-js-components/server.component.wasm"]
+command = ["wasmtime", "serve", "-S", "cli", "${CNB_LAYERS_DIR}/wasm-js-components/server.component.wasm"]
 default = true
 EOL
 
