@@ -1,0 +1,9 @@
+package example:domain@0.3.0;
+
+interface adder {
+  add: func(x: s32, y: s32) -> s32;
+}
+
+world math {
+  export adder;
+}
