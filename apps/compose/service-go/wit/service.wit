@@ -1,0 +1,5 @@
+package example:service@0.3.0;
+world adder {
+  include wasi:cli/imports@0.2.3;
+  include example:domain/math@0.3.0;
+}

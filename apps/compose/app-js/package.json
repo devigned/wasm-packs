@@ -1,0 +1,10 @@
+{
+  "type": "module",
+  "devDependencies": {
+    "@bytecodealliance/componentize-js": "*",
+    "@bytecodealliance/jco": "*"
+  },
+  "scripts": {
+    "build": "wkg wit fetch && node componentize.js"
+  }
+}
