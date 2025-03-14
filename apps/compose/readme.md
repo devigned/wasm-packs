@@ -6,5 +6,8 @@ designed to be easily integrated with other components and services.
 
 ## How to build this component
 ```shell
-./build.sh
+# you will need to install wac and wit-bindgen-go
+cargo install wac-cli
+go install go.bytecodealliance.org/cmd/wit-bindgen-go@main
+make build-and-run
 ```
