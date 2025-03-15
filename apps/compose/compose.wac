@@ -1,0 +1,11 @@
+package example:microservice;
+
+// Instantiate the `math` component
+let math = new example:math {...};
+
+// Instantiate the `server` component by plugging its `adder`
+// import with the `adder` export of the `math` component.
+let server = new example:server {adder: math.adder, ...};
+
+// Export the hander function from the server component
+export server.incoming-handler;

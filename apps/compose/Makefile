@@ -29,17 +29,16 @@ build-go: ## Build the Go app.
 .PHONY: build-compose
 build-compose: ## Build the Docker Compose app.
 	$(info "Fusing components together with wac...")
-	@wac plug --plug $(GO_COMPONENT_PATH) -o composed.wasm $(SERVER_COMPONENT_PATH)
+	# @wac plug --plug $(GO_COMPONENT_PATH) -o composed.wasm $(SERVER_COMPONENT_PATH)
+	wac compose --dep example:math=$(GO_COMPONENT_PATH) --dep example:server=$(SERVER_COMPONENT_PATH) -o composed.wasm compose.wac
 
 .PHONY: run
-run: build ## Run the JavaScript app.
+run: ## Run the microservice app after build.
 	$(info "Running Component Application Using Wasmtime...")
 	wasmtime serve -S cli $(COMPOSED_COMPONENT_PATH)
 
 .PHONY: build-and-run
-build-and-run: build ## Build and run the JavaScript app.
-	$(info "Running Component Application Using Wasmtime...")
-	wasmtime serve -S cli $(COMPOSED_COMPONENT_PATH)
+build-and-run: build run ## Build and run the microservice app.
 
 ##@ Cleanup:
 
