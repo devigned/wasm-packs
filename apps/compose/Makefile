@@ -38,9 +38,7 @@ run: ## Run the microservice app after build.
 	wasmtime serve -S cli $(COMPOSED_COMPONENT_PATH)
 
 .PHONY: build-and-run
-build-and-run: build ## Build and run the microservice app.
-	$(info "Running Component Application Using Wasmtime...")
-	wasmtime serve -S cli $(COMPOSED_COMPONENT_PATH)
+build-and-run: build run ## Build and run the microservice app.
 
 ##@ Cleanup:
 
