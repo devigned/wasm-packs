@@ -28,6 +28,9 @@ uri = "docker://docker.io/heroku/buildpack-nodejs-npm-engine:3.4.11"
 uri = "docker://docker.io/heroku/buildpack-nodejs-npm-install:3.4.11"
 
 [[buildpacks]]
+uri = "docker://docker.io/heroku/buildpack-go:0.5.6"
+
+[[buildpacks]]
 uri = "../../buildpacks/js"
 
 [[buildpacks]]
@@ -35,6 +38,18 @@ uri = "../../buildpacks/wasmtime-engine"
 
 [[buildpacks]]
 uri = "../../buildpacks/wasm-tools"
+
+[[buildpacks]]
+uri = "../../buildpacks/wac-analyzer"
+
+[[buildpacks]]
+uri = "../../buildpacks/wac-composer"
+
+[[buildpacks]]
+uri = "../../buildpacks/wasm-finalizer"
+
+[[buildpacks]]
+uri = "../../buildpacks/go"
 
 [[order]]
 [[order.group]]

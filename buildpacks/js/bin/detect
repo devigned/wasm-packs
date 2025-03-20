@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if [ -f "compose.wac" ]; then
+  echo "wasm-js: compose.wac found"
+  exit 0
+fi
+
 # if package.json does not exist
 if [ ! -f "package.json" ]; then
   echo "No package.json found"
@@ -19,5 +24,4 @@ if ! (( ${#files[@]} )) && [ ! -d "wit" ] ; then
   exit 3
 fi
 
-echo "Wasm JS"
-exit 0
+echo "wasm-js: js wasm project detected"

@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+local compose_cmd="wac compose -o composed.wasm "
+local component_dirs=()
+for project in $(yq -r '.js[]' .projects.json); do
+  local world=$(project=project yq '.dependencies.* | select(. == strenv(project)) | key' -r compose.json)
+  local component_path="${CNB_LAYERS_DIR}/wasm-js-components/${project}.component.wasm"
+  compose_cmd+=" --dep ${world}=${component_path} "
+done
+
+for project in $(yq -r '.go[]' .projects.json); do
+  local world=$(project=project yq '.dependencies.* | select(. == strenv(project)) | key' -r compose.json)
+  local component_path="${CNB_LAYERS_DIR}/wasm-go-components/${project}.component.wasm"
+  compose_cmd+=" --dep ${world}=${component_path} "
+done
+
+compose_cmd+=" compose.wac"
+# command should look something like: `wac compose --dep example:math=./component_path1/math.wasm --dep example:server=./component_path2/server.wasm -o composed.wasm compose.wac`
+$(compose_cmd)
+
+wasm_component_layer="${CNB_LAYERS_DIR}/wac-composer"
+mkdir -p "${wasm_component_layer}"
+cat > "${wasm_component_layer}.toml" << EOL
+[types]
+launch = true
+cache = false
+build = false
+EOL
+
+cp composed.wasm "${wasm_component_layer}"
+
+# Set default start command
+cat > "${CNB_LAYERS_DIR}/launch.toml" << EOL
+[[processes]]
+type = "web"
+command = ["wasmtime", "serve", "-S", "cli", "${wasm_component_layer}/composed.wasm"]
+default = true
+EOL

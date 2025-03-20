@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+exit 0 # always run to remove the working directory

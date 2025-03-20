@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# remove the files in the /workspace directory
+rm -rf /workspace/*
+touch /workspace/.wasm-finalizer

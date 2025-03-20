@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+if [ -f "compose.wac" ] && [ -f "compose.toml" ]; then
+  echo "wac-composer: compose.wac and compose.toml found"
+  exit 0
+else
+  echo "wac-composer: compose.wac and compose.toml not found"
+  exit 1
+fi

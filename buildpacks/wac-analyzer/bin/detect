@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+if [ -f "compose.wac" ]; then
+  echo "wac-analizer: compose.wac found"
+  exit 0
+else
+  exit 1
+fi
