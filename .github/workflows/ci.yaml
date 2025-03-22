@@ -15,6 +15,7 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-docker-action@v4
         with:
+          version: type=image,tag=latest
           daemon-config: |
             {
               "debug": true,
