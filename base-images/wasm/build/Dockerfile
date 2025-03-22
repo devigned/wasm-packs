@@ -21,7 +21,8 @@ RUN wget https://github.com/tinygo-org/tinygo/releases/download/v${TINYGO_RELEAS
 
 ENV PATH=${PATH}:/usr/local/tinygo/bin
 ENV PATH=${PATH}:/usr/local/go/bin
-
+ENV GOPATH=/home/heroku/go
+ENV PATH=${PATH}:/home/heroku/go/bin
 RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_${TARGETARCH} -O /usr/local/bin/yq && chmod +x /usr/local/bin/yq
 
 USER heroku
