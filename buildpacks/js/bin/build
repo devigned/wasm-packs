@@ -38,7 +38,7 @@ build = false
 EOL
 
 npm install
-component_name="${project}.component.wasm"
+component_name="component.wasm"
 COMPONENT_NAME="${component_name}" npm run build
 echo "---> wasm/js: Copying ${component_name} to layer ${wasm_component_layer}"
 cp "${component_name}" "${wasm_component_layer}"
