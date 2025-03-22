@@ -29,13 +29,6 @@ jobs:
           sudo add-apt-repository ppa:cncf-buildpacks/pack-cli
           sudo apt-get update
           sudo apt-get install pack-cli
-      - name: Build base images and create builder
+      - name: Build and test
         run: |
-          ./base-images/build.sh wasm
-          pack builder create wasm/demo-builder:wasm --config ./builders/wasm/builder.toml
-      - name: Run compose buildpack
-        run: |
-          pack build test-wasm-compose --builder wasm/demo-builder:wasm --path ./apps/compose -v
-      - name: Run individual buildpack
-        run: |
-          pack build test-wasm-individual --builder wasm/demo-builder:wasm --path ./apps/js -v
+          make build test
