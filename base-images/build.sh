@@ -55,7 +55,6 @@ TAG=$(basename "${IMAGE_DIR}")
 BASE_IMAGE=heroku/heroku:24-build
 RUN_IMAGE=${REPO_PREFIX}-run:${TAG}
 BUILD_IMAGE=${REPO_PREFIX}-build:${TAG}
-FROM_IMAGE=$(head -n1 "${IMAGE_DIR}"/base/Dockerfile | cut -d' ' -f2)
 
 echo "BUILDING ${BUILD_IMAGE}..."
 docker buildx build --load \
