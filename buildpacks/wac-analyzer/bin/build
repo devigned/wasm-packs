@@ -5,22 +5,26 @@ set -euo pipefail
 function isJS() {
   local project_root="$1"
   if [ ! -d $project_root ]; then
+    echo "wasm/wac-analizer: ${project_root} is not a directory"
     return 100
   fi
 
   # if package.json does not exist
   if [ ! -f "./${project_root}/package.json" ]; then
+    echo "wasm/wac-analizer: ${project_root} does not have a package.json file"
     return 101
   fi
 
   # if the package.json does not contain the string "@bytecodealliance/componentize-js"
   if ! grep -q "@bytecodealliance/componentize-js" "./${project_root}/package.json"; then
+    echo "wasm/wac-analizer: ${project_root} does not have @bytecodealliance/componentize-js in package.json"
     return 102
   fi
 
   # if there are no files that end with .wit or no wit directory
   files=( "./${project_root}/*.wit" )
   if ! (( ${#files[@]} )) && [ ! -d "./${project_root}/wit" ] ; then
+    echo "wasm/wac-analizer: ${project_root} does not have any .wit files or a wit directory"
     return 103
   fi
   echo "isGo: ${project_root} is a JS project"
@@ -29,23 +33,26 @@ function isJS() {
 function isGo() {
   local project_root="$1"
   if [ ! -d $project_root ]; then
-    echo "isGo: not a directory"
+    echo "wasm/wac-analizer: ${project_root} is not a directory"
     return 104
   fi
 
   # if go.mod does not exist
   if [ ! -f "./${project_root}/go.mod" ]; then
+    echo "wasm/wac-analizer: ${project_root} does not have a go.mod file"
     return 105
   fi
 
   # if the go.world.toml does not exist.
   if [ ! -f "./${project_root}/go.world.toml" ]; then
+    echo "wasm/wac-analizer: ${project_root} does not have a go.world.toml file"
     return 106
   fi
 
   # if there are no files that end with .wit or no wit directory
   files=( "*.wit" )
   if ! (( ${#files[@]} )) && [ ! -d "./${project_root}/wit" ] ; then
+    echo "wasm/wac-analizer: ${project_root} does not have any .wit files or a wit directory"
     return 107
   fi
   echo "isGo: ${project_root} is a Go project"
