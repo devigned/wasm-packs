@@ -12,17 +12,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Docker
-        uses: docker/setup-docker-action@v4
-        with:
-          version: type=image,tag=latest
-          daemon-config: |
-            {
-              "debug": true,
-              "features": {
-                "containerd-snapshotter": true
-              }
-            }
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
       - name: Checkout
         uses: actions/checkout@v4
       - name: setup-tools

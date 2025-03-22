@@ -1,13 +1,13 @@
 description = "A builder for WebAssembly"
 
 [build]
-image = "wasm/demo-base-build:wasm"
+image = "wasm/demo-base-build:latest"
 [run]
 [[run.images]]
-image = "wasm/demo-base-run:wasm"
+image = "wasm/demo-base-run:latest"
 
 [lifecycle]
-version = "0.20.5"
+version = "0.20.7"
 
 [[buildpacks]]
 uri = "docker://docker.io/heroku/buildpack-deb-packages@sha256:f2c0162a2fb5f9cb7e6b3c5c59907089483a328824c9323a85cc67d47ab9198c"
