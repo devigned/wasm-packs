@@ -61,7 +61,6 @@ docker buildx build --load \
 	--platform "${PLATFORM}" \
 	--build-arg "BASE_IMAGE=${BASE_IMAGE}" \
 	-t "${BUILD_IMAGE}" \
-	--output type=image \
 	"${IMAGE_DIR}/build"
 
 echo "BUILDING ${RUN_IMAGE}..."
@@ -69,7 +68,6 @@ docker buildx build --load \
 	--platform "${PLATFORM}" \
 	--build-arg "BASE_IMAGE=${BUILD_IMAGE}" \
 	-t "${RUN_IMAGE}" \
-	--output type=image \
 	"${IMAGE_DIR}/run"
 
 echo
