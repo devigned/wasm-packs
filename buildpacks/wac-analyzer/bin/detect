@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
-if [ -f "compose.wac" ]; then
-  echo "wac-analizer: compose.wac found"
+set -euo pipefail
+
+if [ -f "compose.wac" ] && [ -f "compose.json" ]; then
+  echo "wac-analizer: compose.wac and compose.json found"
   exit 0
 else
-  exit 1
+  exit 100
 fi

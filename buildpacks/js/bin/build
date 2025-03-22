@@ -15,13 +15,14 @@ EOL
 
   # Find each JS project listed in the .projects.json file and build them
   for project in $(jq -r '.js[]' .projects.json); do
-    echo "Building js ${project}"
+    echo "wasm/js: Building js ${project}"
     cd "${project}"
     # build the project
     npm install
-    local name="${project}.component.wasm"
-    COMPONENT_NAME="${name}" npm run build
-    cp "${name}" "${wasm_component_layer}"
+    component_name="${project}.component.wasm"
+    COMPONENT_NAME="${component_name}" npm run build
+    echo "---> wasm/js: Copying ${component_name} to layer ${wasm_component_layer}"
+    cp "${component_name}" "${wasm_component_layer}"
   done
   exit 0
 fi
@@ -36,16 +37,17 @@ cache = false
 build = false
 EOL
 
-echo "---> Copying .wasm files to layer"
-
-# recursively copy all files ending in .wasm into the layer directory and ignore the target and node_module directories
-find . -name "*.wasm" -not -path "./target/*" -not -path "./node_modules/*" -exec cp {} "${wasm_component_layer}" \;
+npm install
+component_name="${project}.component.wasm"
+COMPONENT_NAME="${component_name}" npm run build
+echo "---> wasm/js: Copying ${component_name} to layer ${wasm_component_layer}"
+cp "${component_name}" "${wasm_component_layer}"
 
 # Set default start command
 cat > "${CNB_LAYERS_DIR}/launch.toml" << EOL
 [[processes]]
 type = "web"
-command = ["wasmtime", "serve", "-S", "cli", "${CNB_LAYERS_DIR}/wasm-js-components/server.component.wasm"]
+command = ["wasmtime", "serve", "-S", "cli", "${wasm_component_layer}/${component_name}"]
 default = true
 EOL
 

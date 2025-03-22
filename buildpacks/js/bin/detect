@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 if [ -f "compose.wac" ]; then
   echo "wasm-js: compose.wac found"
   exit 0
@@ -8,20 +10,20 @@ fi
 # if package.json does not exist
 if [ ! -f "package.json" ]; then
   echo "No package.json found"
-  exit 1
+  exit 100
 fi
 
 # if the package.json does not contain the string "@bytecodealliance/componentize-js"
 if ! grep -q "@bytecodealliance/componentize-js" "package.json"; then
   echo "No @bytecodealliance/componentize-js found in package.json"
-  exit 2
+  exit 101
 fi
 
 # if there are no files that end with .wit or no wit directory
 files=( "*.wit" )
 if ! (( ${#files[@]} )) && [ ! -d "wit" ] ; then
   echo "No .wit files or wit directory found"
-  exit 3
+  exit 102
 fi
 
 echo "wasm-js: js wasm project detected"

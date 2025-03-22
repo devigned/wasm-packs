@@ -1,35 +1,27 @@
 #!/usr/bin/env bash
 
-
-echo "{}" > .projects.json
-
-# for each directory in the current working directory add the directory to the path to a json file named .wasm-projects using jq
-for dir in */; do
-    # add the directory to the json file
-    isJS "$dir" && project=${dir%*/} yq -iP '.js += [strenv(project)]' .projects.json
-    isGo "$dir" && project=${dir%*/} yq -iP '.go += [strenv(project)]' .projects.json
-done
+set -euo pipefail
 
 function isJS() {
   local project_root="$1"
   if [ ! -d $project_root ]; then
-    return false
+    return 100
   fi
 
   # if package.json does not exist
   if [ ! -f "./${project_root}/package.json" ]; then
-    return false
+    return 101
   fi
 
   # if the package.json does not contain the string "@bytecodealliance/componentize-js"
   if ! grep -q "@bytecodealliance/componentize-js" "./${project_root}/package.json"; then
-    return false
+    return 102
   fi
 
   # if there are no files that end with .wit or no wit directory
   files=( "./${project_root}/*.wit" )
   if ! (( ${#files[@]} )) && [ ! -d "./${project_root}/wit" ] ; then
-    return false
+    return 103
   fi
   echo "isGo: ${project_root} is a JS project"
 }
@@ -38,23 +30,37 @@ function isGo() {
   local project_root="$1"
   if [ ! -d $project_root ]; then
     echo "isGo: not a directory"
-    return false
+    return 104
   fi
 
   # if go.mod does not exist
   if [ ! -f "./${project_root}/go.mod" ]; then
-    return false
+    return 105
   fi
 
   # if the go.world.toml does not exist.
   if [ ! -f "./${project_root}/go.world.toml" ]; then
-    return false
+    return 106
   fi
 
   # if there are no files that end with .wit or no wit directory
   files=( "*.wit" )
   if ! (( ${#files[@]} )) && [ ! -d "./${project_root}/wit" ] ; then
-    return false
+    return 107
   fi
   echo "isGo: ${project_root} is a Go project"
 }
+
+echo "{}" > .projects.json
+
+# for each directory in the current working directory add the directory to the path to a json file named .projects.json using yq
+for dir in */; do
+    # add the directory to the json file
+    if isJS "$dir"; then
+      project=${dir%*/} yq -iP '.js += [strenv(project)]' .projects.json
+    fi
+
+    if isGo "$dir"; then
+      project=${dir%*/} yq -iP '.go += [strenv(project)]' .projects.json
+    fi
+done

@@ -1,0 +1,9 @@
+{
+  "type": "module",
+  "scripts": {
+    "build": "echo 'faker!'"
+  },
+  "dependencies": {
+    "itty-router": "^5.0.18"
+  }
+}

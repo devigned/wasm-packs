@@ -1,7 +1,7 @@
 api = "0.10"
 
 [buildpack]
-id = "wasm/wac-analyzer"
+id = "wasm/wac-composer"
 version = "0.0.1"
 
 [[buildpack.licenses]]
