@@ -35,7 +35,7 @@ jobs:
           pack builder create wasm/demo-builder:wasm --config ./builders/wasm/builder.toml
       - name: Run compose buildpack
         run: |
-          pack build test-wasm-compose --builder wasm/demo-builder:wasm --path ./apps/compose
+          pack build test-wasm-compose --builder wasm/demo-builder:wasm --path ./apps/compose -v
       - name: Run individual buildpack
         run: |
-          pack build test-wasm-individual --builder wasm/demo-builder:wasm --path ./apps/js
+          pack build test-wasm-individual --builder wasm/demo-builder:wasm --path ./apps/js -v
