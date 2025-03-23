@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+CGO_ENABLED=0 go install go.bytecodealliance.org/cmd/wit-bindgen-go@latest
+
+# We have a compose.wac file, so we are a composition project
+if [ -f "compose.wac" ]; then
+  wasm_component_layer="${CNB_LAYERS_DIR}/wasm-golang-components"
+  mkdir -p "${wasm_component_layer}"
+  cat > "${wasm_component_layer}.toml" << EOL
+[types]
+launch = false
+cache = false
+build = true
+EOL
+  # find each JS project listed in the .projects.json file and build them
+  for project in $(jq -r '.go[]' .projects.json); do
+    echo "wasm/golang: Building golang ${project}"
+    cd "${project}"
+    # build the project
+    world=$(yq -r '.target.world' go.world.toml)
+    component_name="${project}.component.wasm"
+    go generate
+    tinygo build -target=wasip2 -o "${component_name}" --wit-package ./wit --wit-world "${world}" .
+    echo "---> wasm/golang: Copying ${component_name} to layer ${wasm_component_layer}"
+    cp "${component_name}" "${wasm_component_layer}"
+  done
+  exit 0 # exit here as we don't want to run the rest of the script
+fi
+
+# Wasm Golang project was found, but it is not a composition project
+wasm_component_layer="${CNB_LAYERS_DIR}/wasm-golang-components"
+mkdir -p "${wasm_component_layer}"
+cat > "${wasm_component_layer}.toml" << EOL
+[types]
+launch = true
+cache = false
+build = false
+EOL
+
+world=$(yq -r '.target.world' go.world.toml)
+component_name="${project}.component.wasm"
+go generate
+tinygo build -target=wasip2 -o "${component_name}" --wit-package ./wit --wit-world "${world}" .
+cp "${component_name}" "${wasm_component_layer}"
+
+# Set default start command
+cat > "${CNB_LAYERS_DIR}/launch.toml" << EOL
+[[processes]]
+type = "web"
+command = ["wasmtime", "serve", "-S", "cli", "${CNB_LAYERS_DIR}/wasm-golang-components/${component_name}"]
+default = true
+EOL
+
+exit 0

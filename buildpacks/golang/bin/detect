@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if [ -f "compose.wac" ]; then
+  echo "wasm-golang: compose.wac found"
+  exit 0
+fi
+
+# if go.mod does not exist
+if [ ! -f "go.mod" ]; then
+  echo "No go.mod found"
+  exit 100
+fi
+
+# if the go.world.toml does not exist.
+if [ ! -f "go.world.toml" ]; then
+  echo "No go.world.toml found"
+  exit 101
+fi
+
+# if there are no files that end with .wit or no wit directory
+files=( "*.wit" )
+if ! (( ${#files[@]} )) && [ ! -d "wit" ] ; then
+  echo "No .wit files or wit directory found"
+  exit 102
+fi
+
+echo "wasm-golang: golang wasm project detected"

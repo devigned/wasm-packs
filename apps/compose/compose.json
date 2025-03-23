@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "example:math": "service-go",
+    "example:server": "app-js"
+  }
+}

@@ -1,31 +1,35 @@
 description = "A builder for WebAssembly"
 
 [build]
-image = "wasm/demo-base-build:wasm"
+image = "wasm/demo-base-build:latest"
 [run]
 [[run.images]]
-image = "wasm/demo-base-run:wasm"
+image = "wasm/demo-base-run:latest"
 
 [lifecycle]
-version = "0.20.5"
+version = "0.20.7"
 
 [[buildpacks]]
 uri = "docker://docker.io/heroku/buildpack-deb-packages@sha256:f2c0162a2fb5f9cb7e6b3c5c59907089483a328824c9323a85cc67d47ab9198c"
 
 [[buildpacks]]
-uri = "../../meta-buildpacks/nodejs"
+uri = "../../meta-buildpacks/wasm"
 
 [[buildpacks]]
 uri = "docker://docker.io/heroku/buildpack-nodejs-engine:3.4.11"
 
-[[buildpacks]]
-uri = "docker://docker.io/heroku/buildpack-nodejs-corepack:3.4.11"
+# [[buildpacks]]
+# uri = "docker://docker.io/heroku/buildpack-nodejs-corepack:3.4.11"
 
-[[buildpacks]]
-uri = "docker://docker.io/heroku/buildpack-nodejs-npm-engine:3.4.11"
+# [[buildpacks]]
+# uri = "docker://docker.io/heroku/buildpack-nodejs-npm-engine:3.4.11"
 
-[[buildpacks]]
-uri = "docker://docker.io/heroku/buildpack-nodejs-npm-install:3.4.11"
+# [[buildpacks]]
+# uri = "docker://docker.io/heroku/buildpack-nodejs-npm-install:3.4.11"
+
+# [[buildpacks]]
+# id = "heroku/go"
+# uri = "docker://docker.io/heroku/buildpack-go:0.5.6"
 
 [[buildpacks]]
 uri = "../../buildpacks/js"
@@ -36,9 +40,21 @@ uri = "../../buildpacks/wasmtime-engine"
 [[buildpacks]]
 uri = "../../buildpacks/wasm-tools"
 
+[[buildpacks]]
+uri = "../../buildpacks/wac-analyzer"
+
+[[buildpacks]]
+uri = "../../buildpacks/wac-composer"
+
+[[buildpacks]]
+uri = "../../buildpacks/wasm-finalizer"
+
+[[buildpacks]]
+uri = "../../buildpacks/golang"
+
 [[order]]
 [[order.group]]
-id = "devigned/nodejs"
+id = "devigned/wasm"
 version = "0.0.1"
 
 [[targets]]

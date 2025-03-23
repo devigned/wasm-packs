@@ -1,0 +1,16 @@
+api = "0.10"
+
+[buildpack]
+id = "wasm/golang"
+version = "0.0.1"
+
+[[buildpack.licenses]]
+type = "MIT"
+
+[[targets]]
+os = "linux"
+arch = "amd64"
+
+[[targets]]
+os = "linux"
+arch = "arm64"

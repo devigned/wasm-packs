@@ -6,5 +6,8 @@
   },
   "scripts": {
     "build": "wkg wit fetch && node componentize.js"
+  },
+  "dependencies": {
+    "itty-router": "^5.0.18"
   }
 }

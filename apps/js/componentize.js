@@ -13,4 +13,5 @@ const { component } = await componentize(jsSource, {
   enableAot,
 });
 
-await writeFile("server.component.wasm", component);
+let componentName = process.env.COMPONENT_NAME ?? "server.component.wasm";
+await writeFile(componentName, component);

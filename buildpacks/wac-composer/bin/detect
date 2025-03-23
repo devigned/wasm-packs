@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if [ -f "compose.wac" ] && [ -f "compose.json" ]; then
+  echo "wac-composer: compose.wac and compose.toml found"
+  exit 0
+else
+  echo "wac-composer: compose.wac and compose.toml not found"
+  exit 100
+fi
