@@ -1,7 +1,7 @@
 SHELL:=/usr/bin/env bash
 ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
-SERVER_COMPONENT_NAME := server.component.wasm
-GO_COMPONENT_NAME := add.wasm
+SERVER_COMPONENT_NAME := frontend.wasm
+GO_COMPONENT_NAME := service.wasm
 SERVER_COMPONENT_PATH := $(ROOT_DIR)/app-js/$(SERVER_COMPONENT_NAME)
 GO_COMPONENT_PATH := $(ROOT_DIR)/service-go/$(GO_COMPONENT_NAME)
 COMPOSED_COMPONENT_PATH := $(ROOT_DIR)/composed.wasm
@@ -19,18 +19,18 @@ build: build-js build-go build-compose ## Run all build steps.
 .PHONY: build-js
 build-js: ## Build the JavaScript component.
 	$(info "Building JavaScript Component...")
-	@cd "$(ROOT_DIR)/app-js" && npm install && npm run build
+	@cd "$(ROOT_DIR)/app-js" && npm install && COMPONENT_NAME=frontend.wasm npm run build
 
 .PHONY: build-go
 build-go: ## Build the Go component.
 	$(info "Building Golang Component...")
-	@cd $(ROOT_DIR)/service-go && go generate && tinygo build -target=wasip2 -o add.wasm --wit-package ./wit --wit-world adder service.go
+	@cd $(ROOT_DIR)/service-go && go generate && tinygo build -target=wasip2 -o service.wasm --wit-package ./wit --wit-world backend service.go
 
 .PHONY: build-compose
 build-compose: ## Compose the microservice app with the constituent components.
 	$(info "Fusing components together with wac...")
 	# @wac plug --plug $(GO_COMPONENT_PATH) -o composed.wasm $(SERVER_COMPONENT_PATH)
-	wac compose --dep example:math=$(GO_COMPONENT_PATH) --dep example:server=$(SERVER_COMPONENT_PATH) -o composed.wasm compose.wac
+	wac compose --dep example:service=$(GO_COMPONENT_PATH) --dep example:server=$(SERVER_COMPONENT_PATH) -o composed.wasm compose.wac
 
 .PHONY: run
 run: ## Run the microservice app after build.

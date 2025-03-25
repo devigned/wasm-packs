@@ -45,8 +45,16 @@ interface chat {
   chat: func(request: chat-request) -> result<chat-response, error>;
 }
 
+<<<<<<< HEAD
 world math {
   export adder;
+=======
+world service {
+  import types;
+
+  export adder;
+  export chat;
+>>>>>>> 8088dd8 (openai chat completion is working)
 }
 world ai {
   import types;
