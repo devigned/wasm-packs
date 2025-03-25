@@ -4,7 +4,13 @@
 package main
 
 import (
+	"context"
+	"fmt"
 	"github.com/devigned/wasm-packs/compose/internal/example/domain/adder"
+	"github.com/devigned/wasm-packs/compose/internal/wasi/cli/run"
+	"github.com/openai/openai-go"
+	_ "github.com/ydnar/wasi-http-go/wasihttp" // enable wasi-http
+	"go.bytecodealliance.org/cm"
 )
 
 func init() {
@@ -13,8 +19,31 @@ func init() {
 		// For example, you could return the sum of x and y.
 		return x + y
 	}
+
+	run.Exports.Run = func() cm.BoolResult {
+		fmt.Println("Running the program...")
+		fmt.Println(generateImage("gpt-4", "a cat"))
+		fmt.Println("Program finished.")
+		return true
+	}
 }
 
 // main is required for the `wasi` target, even if it isn't used.
 func main() {
+}
+
+func generateImage(model, prompt string) (string, error) {
+	client := openai.NewClient(
+	// defaults to os.LookupEnv("OPENAI_API_KEY")
+	)
+	chatCompletion, err := client.Chat.Completions.New(context.TODO(), openai.ChatCompletionNewParams{
+		Messages: []openai.ChatCompletionMessageParamUnion{
+			openai.UserMessage("Say this is a test"),
+		},
+		Model: openai.ChatModelGPT4o,
+	})
+	if err != nil {
+		return "", err
+	}
+	return chatCompletion.Choices[0].Message.Content, nil
 }
