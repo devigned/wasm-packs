@@ -1,0 +1,53 @@
+package example:domain@0.3.1;
+
+interface adder {
+  add: func(x: s32, y: s32) -> s32;
+}
+
+interface types {
+  record message {
+    role: string,
+    content: string,
+  }
+
+  record chat-request {
+    model: string,
+    messages: list<message>,
+  }
+
+  record annotation {
+    annotation-type: string,
+    annotation-value: string,
+  }
+
+  record choice {
+    index: s32,
+    message: message,
+    finish-reason: string,
+  }
+
+  record chat-response {
+    id: string,
+    object: string,
+    created: s32,
+    choices: list<choice>,
+  }
+
+  record error {
+    code: s32,
+    message: string,
+  }
+}
+
+interface chat {
+  use types.{chat-request, chat-response, error};
+
+  chat: func(request: chat-request) -> result<chat-response, error>;
+}
+
+world service {
+  import types;
+
+  export adder;
+  export chat;
+}

@@ -1,11 +1,11 @@
 package example:microservice;
 
-// Instantiate the `math` component
-let math = new example:math {...};
+// Instantiate the `service` component
+let service = new example:service {...};
 
-// Instantiate the `server` component by plugging its `adder`
-// import with the `adder` export of the `math` component.
-let server = new example:server {adder: math.adder, ...};
+// Instantiate the `server` component by plugging its `service`
+// import with the `service` export of the `service` component.
+let server = new example:server {adder: service.adder, chat: service.chat, ...};
 
 // Export the hander function from the server component
 export server.incoming-handler;

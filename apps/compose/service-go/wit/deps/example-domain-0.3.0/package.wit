@@ -45,11 +45,9 @@ interface chat {
   chat: func(request: chat-request) -> result<chat-response, error>;
 }
 
-world math {
-  export adder;
-}
-world ai {
+world service {
   import types;
 
+  export adder;
   export chat;
 }

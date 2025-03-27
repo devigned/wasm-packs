@@ -1,8 +1,7 @@
 package example:service@0.3.0;
-world adder {
+world backend {
   include wasi:cli/imports@0.2.3;
-  include example:domain/math@0.3.0;
-  include example:domain/ai@0.3.0;
+  include example:domain/service@0.3.0;
   import wasi:http/outgoing-handler@0.2.3;
   export wasi:cli/run@0.2.3;
 }

@@ -1,0 +1,36 @@
+package example:domain@0.3.1;
+
+interface types {
+  record chat-request {
+    model: string,
+    messages: list<message>,
+  }
+
+  record message {
+    role: string,
+    content: string,
+  }
+
+  record annotation {
+  	annotation-type:  string,
+  	annotation-value: string,
+  }
+
+  record chat-response {
+    id: string,
+    object: string,
+    created: s32,
+    choices: list<choice>,
+  }
+
+  record choice {
+    index: s32,
+    message: message,
+    finish-reason: string,
+  }
+
+  record error {
+    code: s32,
+    message: string,
+  }
+}
