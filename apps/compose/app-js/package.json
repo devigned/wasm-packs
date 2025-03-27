@@ -2,10 +2,16 @@
   "type": "module",
   "devDependencies": {
     "@bytecodealliance/componentize-js": "*",
-    "@bytecodealliance/jco": "*"
+    "@bytecodealliance/jco": "*",
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "rollup": "^4.37.0",
+    "rollup-plugin-polyfill-node": "^0.13.0"
   },
   "scripts": {
-    "build": "wkg wit fetch && node componentize.js"
+    "build:jco": "jco types -h ./wit",
+    "build:rollup": "rollup -c",
+    "build": "wkg wit fetch && npm run build:rollup  && node componentize.js"
   },
   "dependencies": {
     "itty-router": "^5.0.18"

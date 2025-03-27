@@ -1,2 +1,2 @@
 [overrides]
-"example:domain" = { path = "./wit/domain/" }
+"example:domain" = { path = "../wit/domain/" }

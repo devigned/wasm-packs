@@ -82,8 +82,6 @@ func chatCompletion(chatRequest chat.ChatRequest) (chat.ChatResponse, error) {
 		return chat.ChatResponse{}, chatError{Code: 0, Message: "failed to marshal request"}
 	}
 
-	fmt.Println("Request body: ", string(reqBody))
-
 	req, err := http.NewRequest("POST", "https://api.openai.com/v1/chat/completions", bytes.NewReader(reqBody))
 	if err != nil {
 		return chat.ChatResponse{}, chatError{Code: 0, Message: "failed to create request"}

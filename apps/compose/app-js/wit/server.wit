@@ -3,4 +3,6 @@ package example:server;
 world component {
   export wasi:http/incoming-handler@0.2.3;
   import example:domain/adder@0.3.0;
+  import example:domain/chat@0.3.0;
+  import example:domain/types@0.3.0;
 }

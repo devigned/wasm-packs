@@ -1,22 +1,5 @@
 package example:domain@0.3.0;
 
-world math {
-  export adder;
-}
-
-interface adder {
-  add: func(x: s32, y: s32) -> s32;
-}
-
-world ai {
-  export chat;
-}
-
-interface chat {
-  use types.{chat-request, chat-response, error};
-  chat: func(request: chat-request) -> result<chat-response, error>;
-}
-
 interface types {
   record chat-request {
     model: string,

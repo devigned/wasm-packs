@@ -1,9 +1,0 @@
-package example:domain@0.3.0;
-
-world math {
-  export adder;
-}
-
-interface adder {
-  add: func(x: s32, y: s32) -> s32;
-}

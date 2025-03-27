@@ -1,0 +1,15 @@
+package example:domain@0.3.0;
+
+world service {
+  export adder;
+  export chat;
+}
+
+interface adder {
+  add: func(x: s32, y: s32) -> s32;
+}
+
+interface chat {
+  use types.{chat-request, chat-response, error};
+  chat: func(request: chat-request) -> result<chat-response, error>;
+}
