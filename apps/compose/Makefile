@@ -35,7 +35,7 @@ build-compose: ## Compose the microservice app with the constituent components.
 .PHONY: run
 run: ## Run the microservice app after build.
 	$(info "Running Component Application Using Wasmtime...")
-	wasmtime serve -S cli $(COMPOSED_COMPONENT_PATH)
+	wasmtime serve -S cli --env OPENAI_API_KEY="$${OPENAI_API_KEY}" $(COMPOSED_COMPONENT_PATH)
 
 .PHONY: build-and-run
 build-and-run: build run ## Build and run the microservice app.
