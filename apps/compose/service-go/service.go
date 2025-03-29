@@ -28,7 +28,7 @@ func init() {
 
 	run.Exports.Run = func() cm.BoolResult {
 		res, err := chatCompletion(chat.ChatRequest{
-			Model: "gpt-4o",
+			Model: "gpt-4o-mini",
 			Messages: cm.ToList([]domainTypes.Message{
 				{
 					Role:    "user",
