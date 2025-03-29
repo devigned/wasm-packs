@@ -22,6 +22,8 @@ echo "wac-composer: running compose command: '${compose_cmd}' to create composed
 # command should look something like: `wac compose --dep example:math=./component_path1/math.wasm --dep example:server=./component_path2/server.wasm -o composed.wasm compose.wac`
 $compose_cmd
 
+wasmtime compile composed.wasm
+
 wasm_component_layer="${CNB_LAYERS_DIR}/wac-composer"
 mkdir -p "${wasm_component_layer}"
 cat > "${wasm_component_layer}.toml" << EOL
@@ -31,12 +33,13 @@ cache = false
 build = false
 EOL
 
-cp composed.wasm "${wasm_component_layer}"
+cp composed.cwasm "${wasm_component_layer}"
 
 # Set default start command
 cat > "${CNB_LAYERS_DIR}/launch.toml" << EOL
 [[processes]]
 type = "web"
-command = ["wasmtime", "serve", "-S", "cli", "${wasm_component_layer}/composed.wasm"]
+command = ["wasmtime"]
+args = ["serve", "-S", "cli", "--env", "OPENAI_API_KEY", "--allow-precompiled", "${wasm_component_layer}/composed.cwasm"]
 default = true
 EOL

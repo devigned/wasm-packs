@@ -31,7 +31,7 @@ router
   .get("/chat", (request) => {
     let prompt = request.query["prompt"];
     let chatRequest = {
-      model: "gpt-3.5-turbo",
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "user",
@@ -42,7 +42,6 @@ router
 
     // send the request to the chat function, which is the Golang backend component.
     let result = chat(chatRequest);
-    console.log("result", result);
     return {
       result: result,
     };

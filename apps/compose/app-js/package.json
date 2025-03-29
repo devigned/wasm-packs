@@ -9,7 +9,6 @@
     "rollup-plugin-polyfill-node": "^0.13.0"
   },
   "scripts": {
-    "build:jco": "jco types -h ./wit",
     "build:rollup": "rollup -c",
     "build": "wkg wit fetch && npm run build:rollup  && node componentize.js"
   },
