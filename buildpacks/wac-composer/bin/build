@@ -40,6 +40,6 @@ cat > "${CNB_LAYERS_DIR}/launch.toml" << EOL
 [[processes]]
 type = "web"
 command = ["wasmtime"]
-args = ["serve", "-S", "cli", "--env", "OPENAI_API_KEY", "--allow-precompiled", "${wasm_component_layer}/composed.cwasm"]
+args = ["serve", "-S", "cli", "--env", "--allow-precompiled", "${wasm_component_layer}/composed.cwasm"]
 default = true
 EOL

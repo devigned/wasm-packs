@@ -30,8 +30,9 @@ router
   })
   .get("/chat", (request) => {
     let prompt = request.query["prompt"];
+    let model = request.query["model"];
     let chatRequest = {
-      model: "gpt-4o-mini",
+      model: model ?? "gpt-4o-mini",
       messages: [
         {
           role: "user",

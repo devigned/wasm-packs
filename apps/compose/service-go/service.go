@@ -54,7 +54,8 @@ func init() {
 				Message: chatErr.Message,
 			})
 		}
-		return cm.OK[cm.Result[chat.ChatResponseShape, chat.ChatResponse, chat.Error]](res)
+		cmOk := cm.OK[cm.Result[chat.ChatResponseShape, chat.ChatResponse, chat.Error]](res)
+		return cmOk
 	}
 
 }
